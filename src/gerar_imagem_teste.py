@@ -11,7 +11,8 @@ def main() -> None:
         for x in range(4):
             imagem[y, x] = (x * 40, y * 30, 255 - x * 10)
 
-    caminho = Path(__file__).parent / "images" / "teste_4x4_2.png"
+    raiz_projeto = Path(__file__).resolve().parent.parent
+    caminho = raiz_projeto / "test_images" / "teste_4x4_2.png"
     caminho.parent.mkdir(parents=True, exist_ok=True)
 
     if not cv.imwrite(str(caminho), imagem):

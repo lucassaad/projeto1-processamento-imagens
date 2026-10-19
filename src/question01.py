@@ -1,7 +1,10 @@
+from pathlib import Path
+
 import cv2 as cv
 import numpy as np
 
-OUTPUT_DIR = 'answer01/'
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = PROJECT_ROOT / "answer01"
 
 def TAM2(path: str, scale: int):
 
@@ -21,7 +24,7 @@ def TAM2(path: str, scale: int):
 
             out[i][j] = img[source_y][source_x]
 
-    cv.imwrite(f'{OUTPUT_DIR}tam2.png', out)
+    cv.imwrite(str(OUTPUT_DIR / "tam2.png"), out)
 
 def TAMM(path: str):
 
@@ -36,7 +39,7 @@ def TAMM(path: str):
     for i in range(0,new_H, 2):
         for j in range(0,new_W,2):
             out[i][j] = img[i//2][j//2]
-    cv.imwrite(f'{OUTPUT_DIR}tamm_step1.png', out)
+    cv.imwrite(str(OUTPUT_DIR / "tamm_step1.png"), out)
 
     # linhas 
     for i in range(0,new_H,2):
@@ -49,7 +52,7 @@ def TAMM(path: str):
             mean = (prev.astype(np.uint16) + successor.astype(np.uint16) + 1) // 2
 
             out[i][j] = mean.astype(np.uint8)   
-    cv.imwrite(f'{OUTPUT_DIR}tamm_step2.png', out)
+    cv.imwrite(str(OUTPUT_DIR / "tamm_step2.png"), out)
 
     # colunas
     for i in range(1,new_H,2):
@@ -63,7 +66,7 @@ def TAMM(path: str):
 
             out[i][j] = mean.astype(np.uint8)   
             
-    cv.imwrite(f'{OUTPUT_DIR}tamm_step3.png', out)
+    cv.imwrite(str(OUTPUT_DIR / "tamm_step3.png"), out)
 
 def SUPERRES(path1: str, path2: str):
     img1 = cv.imread(path1)
@@ -105,16 +108,13 @@ def SUPERRES(path1: str, path2: str):
 
             out[i][j] = value // count
                 
-    cv.imwrite(f"{OUTPUT_DIR}superres.png", out)
+    cv.imwrite(str(OUTPUT_DIR / "superres.png"), out)
 
 
 if __name__ == "__main__":
-
-
-    # path = "test_images/teste_4x4_2.png"
-    path = "images/fruit01.png"
-    path2 = "images/fruit02.png"
-    # path2 = "test_images/teste_4x4.png"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    path = str(PROJECT_ROOT / "images" / "fruit01.png")
+    path2 = str(PROJECT_ROOT / "images" / "fruit02.png")
     # TAM2(path, 8)
     # TAMM(path)
     SUPERRES(path, path2)
