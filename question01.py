@@ -65,7 +65,7 @@ def TAMM(path: str):
             
     cv.imwrite(f'{OUTPUT_DIR}tamm_step3.png', out)
 
-def SURPERRES(path1: str, path2: str):
+def SUPERRES(path1: str, path2: str):
     img1 = cv.imread(path1)
     assert img1 is not None, "img1 could not be read, check with os.path.exists()"
     img2 = cv.imread(path2)
@@ -85,14 +85,37 @@ def SURPERRES(path1: str, path2: str):
             if i % 2 == 1 and j % 2 == 1:
                 out[i][j] = img2[i//2][j//2]
 
+    for i in range(new_H):
+        k = i % 2
+        for j in range(1-k, new_W, 2):
+            value = np.zeros(3, dtype=np.int32)
+            count = 0
+            if (i > 0):
+                value += out[i-1][j]
+                count += 1
+            if (i < new_H-1):
+                value += out[i+1][j]
+                count += 1
+            if (j > 0):
+                value += out[i][j-1]
+                count += 1
+            if (j < new_W-1):
+                value += out[i][j+1]
+                count += 1
+
+            out[i][j] = value // count
+                
     cv.imwrite(f"{OUTPUT_DIR}superres.png", out)
 
 
 if __name__ == "__main__":
 
 
+    # path = "test_images/teste_4x4_2.png"
     path = "images/fruit01.png"
     path2 = "images/fruit02.png"
-    TAM2(path, 8)
-    TAMM(path)
-    SURPERRES(path, path2)
+    # path2 = "test_images/teste_4x4.png"
+    # TAM2(path, 8)
+    # TAMM(path)
+    SUPERRES(path, path2)
+    # SUPERRES(path2, path)
