@@ -15,6 +15,7 @@ de histogramas e CDFs.
 ├── test_images/       # Imagens de teste
 ├── src/
 │   ├── gerar_imagem_teste.py
+│   ├── converter_jpg_para_png.py
 │   ├── question01.py
 │   └── question02.py
 ├── main.ipynb         # Notebook com explicações, código e visualizações
